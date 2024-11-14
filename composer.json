@@ -1,0 +1,52 @@
+{
+    "name": "erickcomp/laravel-stacked-components",
+    "description": "Provides components that will be inserted into a given stack",
+    "keywords": [
+        "erickcomp",
+        "laravel",
+        "blade",
+        "component",
+        "stack"
+    ],
+    "homepage": "https://github.com/erickcomp/laravel-stacked-components",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Erick de Azevedo Lima",
+            "email": "ericklima.comp@gmail.com",
+            "role": "Owner/Maintainer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0|^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ErickComp\\StackedAssetComponents\\": "src",
+            "ErickComp\\StackedAssetComponents\\Tests\\": "tests"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ErickComp\\StackedAssetComponents\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ErickComp\\StackedAssetComponents\\Providers\\StackedAssetComponentsProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
