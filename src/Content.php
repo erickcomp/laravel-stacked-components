@@ -1,11 +1,11 @@
 <?php
 
-namespace ErickComp\StackedAssetComponents\StackedAssetComponents;
+namespace ErickComp\StackedAssetComponents;
 
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\ComponentSlot;
 
-class Div extends Asset
+class Content extends Asset
 {
     /**
      * @inheritDoc
@@ -28,22 +28,11 @@ class Div extends Asset
 
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
-        /** @var \Illuminate\View\ComponentAttributeBag $attributes */
-        $attributes = $componentData['attributes'];
-        return $attributes->merge(['src' => $componentData['src']]);
+        return new ComponentAttributeBag();
     }
 
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
-        $renderedSlot = $slot->toHtml();
-        $renderedAttributes = \trim($attributes);
-
-        if (!empty($renderedAttributes)) {
-            $renderedAttributes = " $renderedAttributes";
-        }
-
-        $EOL = PHP_EOL;
-
-        return "<div$renderedAttributes>$EOL$renderedSlot$EOL</div>$EOL";
+        return $slot->toHtml();
     }
 }

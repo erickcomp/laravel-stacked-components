@@ -1,12 +1,11 @@
 <?php
+namespace ErickComp\StackedAssetsComponents;
 
-namespace ErickComp\StackedAssetComponents\Components;
-
+use Illuminate\Contracts\View\View as LaravelViewInterface;
 use Illuminate\Support\Facades\View as ViewFactory;
 use Illuminate\View\Component as LaravelBladeComponent;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\ComponentSlot;
-use Illuminate\Contracts\View\View as LaravelViewInterface;
 
 abstract class Asset extends LaravelBladeComponent
 {
@@ -102,7 +101,7 @@ abstract class Asset extends LaravelBladeComponent
 
         /** @var \Illuminate\View\ComponentAttributeBag $attributes */
         $attributes = $componentData['attributes'];
-        return $attributes->merge(['src' => $componentData['src']]);
+        return $attributes->merge(['src' => $this->getAssetSrc($componentData['src'])]);
     }
 
     /**
@@ -156,5 +155,30 @@ abstract class Asset extends LaravelBladeComponent
         }
 
         return self::$emptyView;
+    }
+
+    protected function getAssetSrc(string $src): string
+    {
+        $assetFunction = config('stacked-assets-components.asset-function');
+
+        if ($assetFunction === false) {
+            return $src;
+        }
+
+        if (\is_string($assetFunction) && \str_contains($assetFunction, '@')) {
+            $assetFunction = \explode('@', $assetFunction, 2);
+        }
+
+        if (\is_callable($assetFunction)) {
+            return $assetFunction($src);
+        }
+
+        $value = \is_scalar($assetFunction)
+            ? (\is_bool($assetFunction) ? 'true' : $assetFunction)
+            : \var_export($assetFunction, true);
+
+        $errmsg = "Config value [stacked-assets-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
+
+        throw new \LogicException($errmsg);
     }
 }

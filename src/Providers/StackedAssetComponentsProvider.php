@@ -25,12 +25,12 @@ class StackedAssetComponentsProvider extends ServiceProvider
         }
 
         if (\is_string($componentNamespace)) {
-            Blade::componentNamespace('ErickComp\\StackedAssetComponents\\Components\\StackedAssetComponents', $componentNamespace);
+            Blade::componentNamespace('ErickComp\\StackedAssetComponents', $componentNamespace);
         }
 
-        Blade::component($jsComponentName, \ErickComp\StackedAssetComponents\StackedAssetComponents\Js::class);
-        Blade::component($cssComponentName, \ErickComp\StackedAssetComponents\StackedAssetComponents\Css::class);
-        Blade::component($contentComponentName, \ErickComp\StackedAssetComponents\StackedAssetComponents\Content::class);
-        Blade::component($divComponentName, \ErickComp\StackedAssetComponents\StackedAssetComponents\Div::class);
+        Blade::component($jsComponentName, \ErickComp\StackedAssetComponents\Js::class);
+        Blade::component($cssComponentName, \ErickComp\StackedAssetComponents\Css::class);
+        Blade::component($contentComponentName, \ErickComp\StackedAssetComponents\Content::class);
+        Blade::component($divComponentName, \ErickComp\StackedAssetComponents\Div::class);
     }
 }
