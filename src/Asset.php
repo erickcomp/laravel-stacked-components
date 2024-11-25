@@ -2,6 +2,7 @@
 namespace ErickComp\StackedAssetsComponents;
 
 use Illuminate\Contracts\View\View as LaravelViewInterface;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View as ViewFactory;
 use Illuminate\View\Component as LaravelBladeComponent;
 use Illuminate\View\ComponentAttributeBag;
@@ -9,6 +10,7 @@ use Illuminate\View\ComponentSlot;
 
 abstract class Asset extends LaravelBladeComponent
 {
+    private static array $phpInternalFunctions;
     private static LaravelViewInterface $emptyView;
     public string $stack;
 
@@ -165,20 +167,55 @@ abstract class Asset extends LaravelBladeComponent
             return $src;
         }
 
-        if (\is_string($assetFunction) && \str_contains($assetFunction, '@')) {
-            $assetFunction = \explode('@', $assetFunction, 2);
-        }
-
-        if (\is_callable($assetFunction)) {
+        if (static::isPhpInternalFunction($assetFunction)) {
             return $assetFunction($src);
         }
 
-        $value = \is_scalar($assetFunction)
-            ? (\is_bool($assetFunction) ? 'true' : $assetFunction)
-            : \var_export($assetFunction, true);
+        return App::call($assetFunction, [$src]);
 
-        $errmsg = "Config value [stacked-assets-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
+        // if (\is_string($assetFunction)) {
 
-        throw new \LogicException($errmsg);
+        //     //if (\is_callable($assetFunction)) {
+
+
+        //     if (\str_contains($assetFunction, '@')) {
+        //         $assetFunction = \str_replace('@', '::', $assetFunction);
+        //     }
+
+        //     if (\str_contains($assetFunction, '::')) {
+        //         $assetFunction = \explode('::', $assetFunction, 2);
+        //     }
+        // }
+
+        // return App::call($assetFunction);
+
+        // if (\is_callable($assetFunction)) {
+        //     return $assetFunction($src);
+        // }
+
+        // $value = \is_scalar($assetFunction)
+        //     ? (\is_bool($assetFunction) ? 'true' : $assetFunction)
+        //     : \var_export($assetFunction, true);
+
+        // $errmsg = "Config value [stacked-assets-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
+
+        // throw new \LogicException($errmsg);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected static function phpInternalFunctions(): array
+    {
+        if (!isset(static::$phpInternalFunctions)) {
+            self::$phpInternalFunctions = \array_values(\get_defined_functions(true)['internal']);
+        }
+
+        return self::$phpInternalFunctions;
+    }
+
+    protected function isPhpInternalFunction(string $functionName): bool
+    {
+        return \in_array();
     }
 }
