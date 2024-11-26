@@ -83,7 +83,7 @@ abstract class Asset extends LaravelBladeComponent
     protected function doRender(array $componentData)
     {
         $attributesForCode = $this->getAttributesToGenerateCode($componentData);
-        $code = $this->getStackedCode($attributesForCode, $componentData['slot']);
+        $code = $this->getStackedCode($attributesForCode, $componentData['slot'] ?? new ComponentSlot());
 
         $this->insertCodeIntoStack($code, $this->once, $this->stackOp);
 
@@ -164,7 +164,7 @@ abstract class Asset extends LaravelBladeComponent
         return self::$emptyView;
     }
 
-    protected function getAssetSrc(string $src): string
+    protected function getAssetSrc(string $src, array $additionalParams = []): string
     {
         $assetFunction = $this->getAssetFunction();
 
@@ -176,7 +176,9 @@ abstract class Asset extends LaravelBladeComponent
             return $assetFunction($src);
         }
 
-        return App::call($assetFunction, [$src]);
+        $callParams = ['asset' => $src] + $additionalParams;
+
+        return App::call($assetFunction, $callParams);
 
         // if (\is_string($assetFunction)) {
 
