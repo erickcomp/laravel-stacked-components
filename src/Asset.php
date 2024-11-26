@@ -25,11 +25,11 @@ abstract class Asset extends LaravelBladeComponent
      */
     public function __construct(
         public ?string $src = null,
-        string $once = "true",
         ?string $stack = null,
+        string $once = "true",
         bool $stackPrepend = false,
+        protected null|string|array|false $assetFunction = null,
     ) {
-
         $this->stack = $this->validateStack($stack);
         $this->once = \filter_var(\strtolower($once), FILTER_VALIDATE_BOOLEAN);
         $this->stackOp = $stackPrepend
@@ -90,6 +90,11 @@ abstract class Asset extends LaravelBladeComponent
         // Returning an empty view implementation so it does not access the filesystem, achieving a better performance.
         // In my tests, the empty view spends 1/3 of the time of an empty string/empty view file
         return static::emptyView();
+    }
+
+    protected function getRenderedSlot(ComponentSlot $slot): string
+    {
+        return $slot->toHtml();
     }
 
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
@@ -161,7 +166,7 @@ abstract class Asset extends LaravelBladeComponent
 
     protected function getAssetSrc(string $src): string
     {
-        $assetFunction = config('stacked-assets-components.asset-function');
+        $assetFunction = $this->getAssetFunction();
 
         if ($assetFunction === false) {
             return $src;
@@ -202,6 +207,11 @@ abstract class Asset extends LaravelBladeComponent
         // throw new \LogicException($errmsg);
     }
 
+    protected function getAssetFunction(): null|string|array|false
+    {
+        return $this->assetFunction ?? config('stacked-assets-components.asset-function');
+    }
+
     /**
      * @return string[]
      */
@@ -216,6 +226,6 @@ abstract class Asset extends LaravelBladeComponent
 
     protected function isPhpInternalFunction(string $functionName): bool
     {
-        return \in_array();
+        return \in_array($functionName, static::phpInternalFunctions(), true);
     }
 }

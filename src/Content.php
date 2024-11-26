@@ -33,6 +33,6 @@ class Content extends Asset
 
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
-        return $slot->toHtml();
+        return $this->getRenderedSlot($slot);
     }
 }

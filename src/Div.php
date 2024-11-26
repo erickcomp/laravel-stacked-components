@@ -35,7 +35,7 @@ class Div extends Asset
 
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
-        $renderedSlot = $slot->toHtml();
+        $renderedSlot = $this->getRenderedSlot($slot);
         $renderedAttributes = \trim($attributes);
 
         if (!empty($renderedAttributes)) {
