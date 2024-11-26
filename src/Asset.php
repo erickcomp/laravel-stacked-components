@@ -1,5 +1,5 @@
 <?php
-namespace ErickComp\StackedAssetsComponents;
+namespace ErickComp\StackedComponents;
 
 use Illuminate\Contracts\View\View as LaravelViewInterface;
 use Illuminate\Support\Facades\App;
@@ -41,14 +41,14 @@ abstract class Asset extends LaravelBladeComponent
     {
         $assetType = static::assetType();
         $assetTypeLower = \strtolower($assetType);
-        $stack ??= config("stacked-assets-components.default-stack-$assetTypeLower", null);
+        $stack ??= config("stacked-components.default-stack-$assetTypeLower", null);
 
         if ($stack === null) {
             $assetTypeUpper = \strtoupper($assetType);
 
             throw new \LogicException(
                 "You must inform a stack or configure a default $assetTypeUpper stack. " .
-                "You can do it by setting the config [stacked-assets-components.default-stack-$assetTypeLower] " .
+                "You can do it by setting the config [stacked-components.default-stack-$assetTypeLower] " .
                 "or the environment variable [STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_$assetTypeUpper]"
             );
         }
@@ -202,14 +202,14 @@ abstract class Asset extends LaravelBladeComponent
         //     ? (\is_bool($assetFunction) ? 'true' : $assetFunction)
         //     : \var_export($assetFunction, true);
 
-        // $errmsg = "Config value [stacked-assets-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
+        // $errmsg = "Config value [stacked-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
 
         // throw new \LogicException($errmsg);
     }
 
     protected function getAssetFunction(): null|string|array|false
     {
-        return $this->assetFunction ?? config('stacked-assets-components.asset-function');
+        return $this->assetFunction ?? config('stacked-components.asset-function');
     }
 
     /**

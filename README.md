@@ -54,7 +54,7 @@ STACKED_ASSETS_COMPONENTS_DEFAULT_ASSET_FUNCTION
 ```
 or the config value
 ```ini
-stacked-assets-components.asset-function
+stacked-components.asset-function
 ```
 
 To call any callable, you can use one of the following options the [PHP's callable syntax](https://www.php.net/manual/en/language.types.callable.php) or the Laravel's "@" syntax (```MyNamespace\MyClass@myAssetFunction```).
@@ -111,15 +111,15 @@ STACKED_ASSETS_COMPONENTS_COMPONENT_NAMESPACE
 ```
 or the config value
 ```ini
-stacked-assets-components.component-namespace
+stacked-components.component-namespace
 ```
 
 If you set the namespace with the bool value "true", it will use the namespace "stacked". If you set it to any string, the set string will be used as the blade components namespace. For more information on components namespaces check the [Laravel docs](https://laravel.com/docs/packages#autoloading-package-components)
 
 2 - Set the config values
 ```ini
-stacked-assets-components.component-name-js
-stacked-assets-components.component-name-css
+stacked-components.component-name-js
+stacked-components.component-name-css
 ```
 or the environment variables
 ```ini

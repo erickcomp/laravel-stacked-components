@@ -23,13 +23,13 @@
     },
     "autoload": {
         "psr-4": {
-            "ErickComp\\StackedAssetComponents\\": "src",
-            "ErickComp\\StackedAssetComponents\\Tests\\": "tests"
+            "ErickComp\\StackedComponents\\": "src",
+            "ErickComp\\StackedComponents\\Tests\\": "tests"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ErickComp\\StackedAssetComponents\\Tests\\": "tests"
+            "ErickComp\\StackedComponents\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -43,7 +43,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ErickComp\\StackedAssetComponents\\Providers\\StackedAssetComponentsProvider"
+                "ErickComp\\StackedComponents\\Providers\\StackedComponentsProvider"
             ]
         }
     },

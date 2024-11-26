@@ -1,18 +1,18 @@
 <?php
 
-namespace ErickComp\StackedAssetComponents\Providers;
+namespace ErickComp\StackedComponents\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class StackedAssetComponentsProvider extends ServiceProvider
+class StackedComponentsProvider extends ServiceProvider
 {
     /**
      * @inheritDoc
      */
     public function boot(): void
     {
-        $config = config('stacked-assets-components');
+        $config = config('stacked-components');
 
         $componentNamespace = $config['component-namespace'] ?? false;
         $jsComponentName = $config['component-name-js'];
@@ -28,9 +28,9 @@ class StackedAssetComponentsProvider extends ServiceProvider
             Blade::componentNamespace('ErickComp\\StackedAssetComponents', $componentNamespace);
         }
 
-        Blade::component($jsComponentName, \ErickComp\StackedAssetComponents\Js::class);
-        Blade::component($cssComponentName, \ErickComp\StackedAssetComponents\Css::class);
-        Blade::component($contentComponentName, \ErickComp\StackedAssetComponents\Content::class);
-        Blade::component($divComponentName, \ErickComp\StackedAssetComponents\Div::class);
+        Blade::component($jsComponentName, \ErickComp\StackedComponents\Js::class);
+        Blade::component($cssComponentName, \ErickComp\StackedComponents\Css::class);
+        Blade::component($contentComponentName, \ErickComp\StackedComponents\Content::class);
+        Blade::component($divComponentName, \ErickComp\StackedComponents\Div::class);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace ErickComp\StackedAssetComponents;
+namespace ErickComp\StackedComponents;
 
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\ComponentSlot;
