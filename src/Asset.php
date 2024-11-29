@@ -108,7 +108,12 @@ abstract class Asset extends LaravelBladeComponent
 
         /** @var \Illuminate\View\ComponentAttributeBag $attributes */
         $attributes = $componentData['attributes'];
-        return $attributes->merge(['src' => $this->getAssetSrc($componentData['src'])]);
+
+        if ($componentData['src'] !== null) {
+            $attributes = $attributes->merge(['src' => $this->getAssetSrc($componentData['src'])]);
+        }
+
+        return $attributes;
     }
 
     /**
