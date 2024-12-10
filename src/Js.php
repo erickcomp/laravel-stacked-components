@@ -2,6 +2,7 @@
 
 namespace ErickComp\StackedComponents;
 
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\ComponentSlot;
 
@@ -27,6 +28,9 @@ class Js extends Asset
             return "<script$renderedAttributes></script>$EOL";
         }
 
-        return "<script$renderedAttributes>$EOL$renderedSlot$EOL</script>$EOL";
+        $trimmedSlot = Str::replaceStart('<script>', '', $trimmedSlot);
+        $trimmedSlot = Str::replaceEnd('</script>', '', $trimmedSlot);
+
+        return "<script$renderedAttributes>$EOL    $trimmedSlot    $EOL</script>$EOL";
     }
 }

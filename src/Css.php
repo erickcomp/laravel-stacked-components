@@ -2,6 +2,7 @@
 
 namespace ErickComp\StackedComponents;
 
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\ComponentSlot;
 
@@ -37,8 +38,13 @@ class Css extends Asset
 
         $EOL = PHP_EOL;
 
-        return empty(\trim($slot))
-            ? "<link$renderedAttributes>$EOL"
-            : "<style$renderedAttributes>$EOL    $slot    $EOL</style>$EOL";
+        if (empty($trimmedSlot = \trim($slot))) {
+            return "<link$renderedAttributes>$EOL";
+        }
+
+        $trimmedSlot = Str::replaceStart('<style>', '', $trimmedSlot);
+        $trimmedSlot = Str::replaceEnd('</style>', '', $trimmedSlot);
+
+        return "<style$renderedAttributes>$EOL    $trimmedSlot    $EOL</style>$EOL";
     }
 }
