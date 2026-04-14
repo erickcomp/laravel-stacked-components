@@ -9,6 +9,17 @@ use Illuminate\Support\ServiceProvider;
 class StackedComponentsProvider extends ServiceProvider
 {
     /**
+     * Register any package services.
+     */
+    public function register(): void
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/stacked-assets-components.php',
+            'stacked-components',
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     public function boot(): void
@@ -43,20 +54,15 @@ class StackedComponentsProvider extends ServiceProvider
             return \array_key_exists($stack, $this->pushes);
         });
 
-        $stackCreator = new class () {
-            protected array $stacksCreated = [];
-            public function __invoke(string $templateStr): string {}
-        };
-
         Blade::prepareStringsForCompilationUsing(
             function (string $templateStr): string {
                 if (\str_contains($templateStr, '</head>')) {
                     if (!ViewFactory::hasStack('head_bottom')) {
                         ViewFactory::startPush('head_bottom', '');
-                        return \str_replace('</head>', "@stack('head_bottom')\n</head>", $templateStr);
                     }
-                }
 
+                    return \str_replace('</head>', "@stack('head_bottom')\n</head>", $templateStr);
+                }
 
                 return $templateStr;
 
