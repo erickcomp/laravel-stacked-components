@@ -191,34 +191,6 @@ abstract class Asset extends LaravelBladeComponent
         $callParams = ['asset' => $src] + $additionalParams;
 
         return App::call($assetFunction, $callParams);
-
-        // if (\is_string($assetFunction)) {
-
-        //     //if (\is_callable($assetFunction)) {
-
-
-        //     if (\str_contains($assetFunction, '@')) {
-        //         $assetFunction = \str_replace('@', '::', $assetFunction);
-        //     }
-
-        //     if (\str_contains($assetFunction, '::')) {
-        //         $assetFunction = \explode('::', $assetFunction, 2);
-        //     }
-        // }
-
-        // return App::call($assetFunction);
-
-        // if (\is_callable($assetFunction)) {
-        //     return $assetFunction($src);
-        // }
-
-        // $value = \is_scalar($assetFunction)
-        //     ? (\is_bool($assetFunction) ? 'true' : $assetFunction)
-        //     : \var_export($assetFunction, true);
-
-        // $errmsg = "Config value [stacked-components.asset-function] must contain the value false or a callable. The value [$value] is not a callable.";
-
-        // throw new \LogicException($errmsg);
     }
 
     protected function getAssetFunction(): null|string|array|object|false
