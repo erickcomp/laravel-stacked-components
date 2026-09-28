@@ -14,8 +14,8 @@ class Div extends Asset
      */
     public function __construct(
         string $stack,
-        string $once = "false",
-        bool $stackPrepend = false,
+        bool|string $once = false,
+        bool|string $stackPrepend = false,
     ) {
         parent::__construct(null, $stack, $once, $stackPrepend);
     }

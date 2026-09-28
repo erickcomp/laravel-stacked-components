@@ -103,9 +103,15 @@ class AssetTest extends TestCase
     }
 
     #[DataProvider('onceValues')]
-    public function test_it_parses_once(string $once, bool $expected): void
+    public function test_it_parses_once(bool|string $once, bool $expected): void
     {
         $this->assertSame($expected, $this->makeAsset(once: $once)->once);
+    }
+
+    #[DataProvider('onceValues')]
+    public function test_it_parses_stack_prepend(bool|string $stackPrepend, bool $expected): void
+    {
+        $this->assertSame($expected ? 'prepend' : 'push', $this->makeAsset(stackPrepend: $stackPrepend)->stackOp);
     }
 
     public static function onceValues(): array
@@ -122,6 +128,8 @@ class AssetTest extends TestCase
             'no' => ['no', false],
             'empty' => ['', false],
             'garbage' => ['garbage', false],
+            'bool true' => [true, true],
+            'bool false' => [false, false],
         ];
     }
 
@@ -155,8 +163,8 @@ class AssetTest extends TestCase
 
     private function makeAsset(
         ?string $stack = 'scripts',
-        string $once = 'true',
-        bool $stackPrepend = false,
+        bool|string $once = true,
+        bool|string $stackPrepend = false,
         null|string|array|object|false $assetFunction = null,
     ): Js {
         return new class('/app.js', $stack, $once, $stackPrepend, $assetFunction) extends Js {

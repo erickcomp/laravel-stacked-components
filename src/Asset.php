@@ -30,15 +30,23 @@ abstract class Asset extends LaravelBladeComponent
     public function __construct(
         public ?string $src = null,
         ?string $stack = null,
-        string $once = "true",
-        bool $stackPrepend = false,
+        bool|string $once = true,
+        bool|string $stackPrepend = false,
         protected null|string|array|object|false $assetFunction = null,
     ) {
         $this->stack = $this->validateStack($stack);
-        $this->once = \filter_var(\strtolower($once), FILTER_VALIDATE_BOOLEAN);
-        $this->stackOp = $stackPrepend
+        $this->once = self::toBool($once);
+        $this->stackOp = self::toBool($stackPrepend)
             ? 'prepend'
             : 'push';
+    }
+
+    /**
+     * Blade passes a string for once="false" and a bool for :once="false" or a valueless attribute
+     */
+    private static function toBool(bool|string $value): bool
+    {
+        return \is_bool($value) ? $value : \filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
     protected function validateStack(?string $stack): string

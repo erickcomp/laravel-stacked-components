@@ -36,6 +36,15 @@ class ContentTest extends TestCase
         $this->assertSame('[foo]', $html);
     }
 
+    public function test_valueless_once_pushes_the_same_content_only_once(): void
+    {
+        $html = $this->renderBlade(
+            '<x-stacked-content stack="s" once>foo</x-stacked-content><x-stacked-content stack="s" once>foo</x-stacked-content>[@stack(\'s\')]',
+        );
+
+        $this->assertSame('[foo]', $html);
+    }
+
     public function test_stack_prepend_puts_the_content_first(): void
     {
         $html = $this->renderBlade(
