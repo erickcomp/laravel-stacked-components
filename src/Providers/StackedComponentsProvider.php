@@ -58,7 +58,9 @@ class StackedComponentsProvider extends ServiceProvider
             function (string $templateStr): string {
                 if (\str_contains($templateStr, '</head>')) {
                     if (!ViewFactory::hasStack('head_bottom')) {
-                        ViewFactory::startPush('head_bottom', '');
+                        // startPush() with no content opens an output buffer, so it must be closed right away
+                        ViewFactory::startPush('head_bottom');
+                        ViewFactory::stopPush();
                     }
 
                     return \str_replace('</head>', "@stack('head_bottom')\n</head>", $templateStr);
