@@ -4,6 +4,8 @@ All notable changes to this package are documented in this file. It follows [Kee
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-28
+
 See [UPGRADE.md](UPGRADE.md) for how to upgrade from 0.x.
 
 ### Removed
@@ -51,5 +53,6 @@ The last release supporting Laravel 10 and 11.
 
 - A test suite and CI on PHP 8.2–8.4 and Laravel 10–13.
 
-[Unreleased]: https://github.com/erickcomp/laravel-stacked-components/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/erickcomp/laravel-stacked-components/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/erickcomp/laravel-stacked-components/compare/0.10.0...1.0.0
 [0.10.0]: https://github.com/erickcomp/laravel-stacked-components/compare/0.9.1...0.10.0
