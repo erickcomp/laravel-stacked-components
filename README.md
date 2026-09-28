@@ -58,6 +58,8 @@ stacked-components.asset-function
 ```
 
 To call any callable, you can use one of the following options the [PHP's callable syntax](https://www.php.net/manual/en/language.types.callable.php) or the Laravel's "@" syntax (```MyNamespace\MyClass@myAssetFunction```).
+The callable is invoked through Laravel's container, which passes the asset's src to its ```$asset``` parameter and injects any other dependency it asks for.
+Global functions with no ```$asset``` parameter, like Laravel's ```asset($path)```, get the src as their first argument instead.
 To call no function by default you must set the config value or the environment variable with the value <b><u>false</u></b>.
 
 Note that if decide to use objects (anonoymous functions, invokable objects, first-class callables), you won't be able to use Laravel's config cache,

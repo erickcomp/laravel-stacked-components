@@ -12,6 +12,9 @@ abstract class Asset extends LaravelBladeComponent
 {
     /** @var array<string, int> */
     private static array $phpInternalFunctions;
+
+    /** @var array<string, bool> */
+    private static array $functionsWithoutAssetParameter = [];
     private static LaravelViewInterface $emptyView;
     public string $stack;
 
@@ -178,7 +181,10 @@ abstract class Asset extends LaravelBladeComponent
             return $src;
         }
 
-        if (\is_string($assetFunction) && static::isPhpInternalFunction($assetFunction)) {
+        if (
+            \is_string($assetFunction)
+            && (static::isPhpInternalFunction($assetFunction) || static::isFunctionWithoutAssetParameter($assetFunction))
+        ) {
             return $assetFunction($src);
         }
 
@@ -233,5 +239,22 @@ abstract class Asset extends LaravelBladeComponent
     protected function isPhpInternalFunction(string $functionName): bool
     {
         return isset(static::phpInternalFunctions()[$functionName]);
+    }
+
+    /**
+     * Whether it's a global function with no "$asset" parameter, like Laravel's asset($path), that App::call()
+     * can't bind the src to, so the src must be passed positionally
+     */
+    protected function isFunctionWithoutAssetParameter(string $functionName): bool
+    {
+        return self::$functionsWithoutAssetParameter[$functionName] ??= \function_exists($functionName)
+            && !\in_array(
+                'asset',
+                \array_map(
+                    static fn (\ReflectionParameter $parameter) => $parameter->getName(),
+                    (new \ReflectionFunction($functionName))->getParameters(),
+                ),
+                true,
+            );
     }
 }
