@@ -14,11 +14,10 @@ class Content extends Asset
      */
     public function __construct(
         string $stack,
-        public ?string $src = null,
         string $once = "false",
         bool $stackPrepend = false,
     ) {
-        parent::__construct($src, $stack, $once, $stackPrepend);
+        parent::__construct(null, $stack, $once, $stackPrepend);
     }
 
     protected function validateStack(?string $stack): string

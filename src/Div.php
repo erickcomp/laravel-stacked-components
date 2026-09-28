@@ -14,11 +14,10 @@ class Div extends Asset
      */
     public function __construct(
         string $stack,
-        public ?string $src = null,
         string $once = "false",
         bool $stackPrepend = false,
     ) {
-        parent::__construct($src, $stack, $once, $stackPrepend);
+        parent::__construct(null, $stack, $once, $stackPrepend);
     }
 
     protected function validateStack(?string $stack): string
@@ -28,9 +27,7 @@ class Div extends Asset
 
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
-        /** @var \Illuminate\View\ComponentAttributeBag $attributes */
-        $attributes = $componentData['attributes'];
-        return $attributes->merge(['src' => $componentData['src']]);
+        return $componentData['attributes'];
     }
 
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string

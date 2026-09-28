@@ -52,6 +52,13 @@ class ContentTest extends TestCase
         $this->assertSame('[bar]', $html);
     }
 
+    public function test_src_is_ignored_like_any_other_attribute(): void
+    {
+        $html = $this->renderBlade('<x-stacked-content stack="s" src="/app.js">foo</x-stacked-content>[@stack(\'s\')]');
+
+        $this->assertSame('[foo]', $html);
+    }
+
     public function test_it_renders_blade_inside_the_slot(): void
     {
         $html = $this->renderBlade('<x-stacked-content stack="s">{{ $name }}</x-stacked-content>[@stack(\'s\')]', ['name' => '<b>']);

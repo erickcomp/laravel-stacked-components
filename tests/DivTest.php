@@ -19,6 +19,15 @@ class DivTest extends TestCase
         $this->assertMatchesRegularExpression('#^<div [^>]*\bclass="modal"#', $html);
     }
 
+    public function test_src_is_an_ordinary_attribute(): void
+    {
+        config(['stacked-components.asset-function' => 'strtoupper']);
+
+        $html = $this->renderBlade('<x-stacked-div stack="modals" src="/image.png">Hello</x-stacked-div>@stack(\'modals\')');
+
+        $this->assertStringStartsWith('<div src="/image.png">', $html);
+    }
+
     public function test_it_renders_nothing_where_the_component_is_used(): void
     {
         $html = $this->renderBlade('before|<x-stacked-div stack="modals">Hello</x-stacked-div>|after');
