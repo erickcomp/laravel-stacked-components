@@ -4,13 +4,25 @@ All notable changes to this package are documented in this file. It follows [Kee
 
 ## [Unreleased]
 
+See [UPGRADE.md](UPGRADE.md) for how to upgrade from 0.x.
+
 ### Removed
 
 - Support for Laravel 10 and 11. The package now requires Laravel 12 or 13; use 0.10 on older Laravel versions.
+- The `src` parameter of the content and div components.
 
 ### Changed
 
+- The environment variables are named `STACKED_COMPONENTS_` plus the config key, like `STACKED_COMPONENTS_ASSET_FUNCTION`. The `STACKED_ASSETS_COMPONENTS_*` names are no longer read.
+- The package's config file is `config/stacked-components.php`.
+- `once` and `stack-prepend` take a bool or a string. `stack-prepend="false"` used to prepend; it now pushes.
+- Protected methods and properties are marked `@internal`: they aren't part of the package's API.
 - The distributed package no longer ships tests, CI and PHPUnit config, and the `Tests` namespace is no longer in the production autoload.
+
+### Added
+
+- The config can be published with `php artisan vendor:publish --tag=stacked-components-config`.
+- The `head-bottom-stack` option (`STACKED_COMPONENTS_HEAD_BOTTOM_STACK`) turns off the `head_bottom` stack.
 
 ## [0.10.0] - 2026-09-28
 
@@ -33,6 +45,7 @@ The last release supporting Laravel 10 and 11.
 - `src` together with inline code now throws a `LogicException`.
 - `component-namespace = false` no longer registers the `stacked` namespace.
 - `Asset::phpInternalFunctions()` (protected) returns a map of name ⇒ index instead of a list.
+- The protected `$assetFunction` property accepts objects. Subclasses that redeclare it, for example by promoting it in their constructor, must use the same type (`null|string|array|object|false`), or PHP fails to load them.
 
 ### Added
 

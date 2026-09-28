@@ -21,6 +21,16 @@ For Laravel 10 and 11, use version 0.10.
 composer require erickcomp/laravel-stacked-components
 ```
 
+To customize the config, publish it to ```config/stacked-components.php```:
+
+```shell
+php artisan vendor:publish --tag=stacked-components-config
+```
+
+Every config value can also be set by an environment variable named ```STACKED_COMPONENTS_``` plus the config key in upper snake case, like ```STACKED_COMPONENTS_DEFAULT_STACK_JS``` for ```default-stack-js```.
+
+Upgrading from 0.x? See [UPGRADE.md](UPGRADE.md).
+
 ## The vanilla-Blade way
 
 To push some JS file/code to a stack, you have to ([from Laravel docs](https://laravel.com/docs/12.x/blade#stacks)):
@@ -83,7 +93,7 @@ A component can't have both a ```src``` and inline code.
 This package calls Laravel's ```asset``` function on the ```src``` of the JS and CSS components by default. You can override this behavior to call your own callable or to call nothing at all.
 To do either of these, you can set the environment variable
 ```ini
-STACKED_ASSETS_COMPONENTS_DEFAULT_ASSET_FUNCTION
+STACKED_COMPONENTS_ASSET_FUNCTION
 ```
 or the config value
 ```ini
@@ -135,11 +145,13 @@ pushes its content wrapped in a ```<div>``` with the given attributes.
 All the components accept:
 
 * ```stack```: the stack to push to. For the JS and CSS components, you can set a default stack in config/env and omit it (see below).
-* ```once```: whether the same content is pushed only once, like Blade's ```@pushOnce```. It defaults to ```"true"``` for the JS and CSS components and to ```"false"``` for the content and div components.
+* ```once```: whether the same content is pushed only once, like Blade's ```@pushOnce```. It defaults to true for the JS and CSS components and to false for the content and div components.
 * ```stack-prepend```: prepends the content to the stack instead of pushing it, like Blade's ```@prepend```.
 
+Both take a string (```once="false"```), a bound bool (```:once="false"```) or no value (```once```, meaning true):
+
 ```blade
-<x-js src="/vendor.js" stack="scripts" :stack-prepend="true"/>
+<x-js src="/vendor.js" stack="scripts" stack-prepend/>
 <x-stacked-content stack="scripts" once="true">...</x-stacked-content>
 ```
 
@@ -149,8 +161,8 @@ For the CSS and JS components, you can set a default stack in config/env and omi
 
 .env file:
 ```ini
-STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_JS="scripts"
-STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_CSS="styles"
+STACKED_COMPONENTS_DEFAULT_STACK_JS="scripts"
+STACKED_COMPONENTS_DEFAULT_STACK_CSS="styles"
 ```
 
 and in your view file:
@@ -166,12 +178,14 @@ Every template with a ```</head>``` tag gets a ```head_bottom``` stack right bef
 <x-css src="/example.css" stack="head_bottom"/>
 ```
 
+To turn it off, set the config value ```stacked-components.head-bottom-stack``` or the environment variable ```STACKED_COMPONENTS_HEAD_BOTTOM_STACK``` to false, and clear the view cache: templates get the stack when they're compiled.
+
 ### Resolving name collisions with other components
 If your app, or a library you're using, already defines components with the same names as this package's, you have 2 options:
 
 1 - Register a namespace for the components of this package. To do so, you can set the environment variable
 ```ini
-STACKED_ASSETS_COMPONENTS_COMPONENT_NAMESPACE
+STACKED_COMPONENTS_COMPONENT_NAMESPACE
 ```
 or the config value
 ```ini
@@ -189,10 +203,10 @@ stacked-components.component-name-div
 ```
 or the environment variables
 ```ini
-STACKED_ASSETS_COMPONENTS_COMPONENT_NAME_JS
-STACKED_ASSETS_COMPONENTS_COMPONENT_NAME_CSS
-STACKED_ASSETS_COMPONENTS_COMPONENT_NAME_CONTENT
-STACKED_ASSETS_COMPONENTS_COMPONENT_NAME_DIV
+STACKED_COMPONENTS_COMPONENT_NAME_JS
+STACKED_COMPONENTS_COMPONENT_NAME_CSS
+STACKED_COMPONENTS_COMPONENT_NAME_CONTENT
+STACKED_COMPONENTS_COMPONENT_NAME_DIV
 ```
 To specify alternate names for the components.
 
@@ -202,6 +216,10 @@ To clear the view cache run the view:clear artisan command:
 ```shell
 php artisan view:clear
 ```
+
+## Extending the components
+
+You can extend the component classes, but their protected methods and properties are internal: they aren't part of the package's API and may change in any release. Extend them at your own risk.
 
 ## License
 
