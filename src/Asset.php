@@ -10,6 +10,7 @@ use Illuminate\View\ComponentSlot;
 
 abstract class Asset extends LaravelBladeComponent
 {
+    /** @var array<string, int> */
     private static array $phpInternalFunctions;
     private static LaravelViewInterface $emptyView;
     public string $stack;
@@ -28,7 +29,7 @@ abstract class Asset extends LaravelBladeComponent
         ?string $stack = null,
         string $once = "true",
         bool $stackPrepend = false,
-        protected null|string|array|false $assetFunction = null,
+        protected null|string|array|object|false $assetFunction = null,
     ) {
         $this->stack = $this->validateStack($stack);
         $this->once = \filter_var(\strtolower($once), FILTER_VALIDATE_BOOLEAN);
@@ -177,7 +178,7 @@ abstract class Asset extends LaravelBladeComponent
             return $src;
         }
 
-        if (static::isPhpInternalFunction($assetFunction)) {
+        if (\is_string($assetFunction) && static::isPhpInternalFunction($assetFunction)) {
             return $assetFunction($src);
         }
 
@@ -214,25 +215,23 @@ abstract class Asset extends LaravelBladeComponent
         // throw new \LogicException($errmsg);
     }
 
-    protected function getAssetFunction(): null|string|array|false
+    protected function getAssetFunction(): null|string|array|object|false
     {
         return $this->assetFunction ?? config('stacked-components.asset-function');
     }
 
     /**
-     * @return string[]
+     * PHP's internal functions, keyed by name so the lookup is a hash hit
+     *
+     * @return array<string, int>
      */
     protected static function phpInternalFunctions(): array
     {
-        if (!isset(static::$phpInternalFunctions)) {
-            self::$phpInternalFunctions = \array_values(\get_defined_functions(true)['internal']);
-        }
-
-        return self::$phpInternalFunctions;
+        return self::$phpInternalFunctions ??= \array_flip(\get_defined_functions(true)['internal']);
     }
 
     protected function isPhpInternalFunction(string $functionName): bool
     {
-        return \in_array($functionName, static::phpInternalFunctions(), true);
+        return isset(static::phpInternalFunctions()[$functionName]);
     }
 }
