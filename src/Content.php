@@ -18,7 +18,7 @@ class Content extends Asset
         string $once = "false",
         bool $stackPrepend = false,
     ) {
-        parent::__construct($src, $once, $stack, $stackPrepend);
+        parent::__construct($src, $stack, $once, $stackPrepend);
     }
 
     protected function validateStack(?string $stack): string
