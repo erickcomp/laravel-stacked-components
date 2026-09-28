@@ -61,7 +61,7 @@ abstract class Asset extends LaravelBladeComponent
             throw new \LogicException(
                 "You must inform a stack or configure a default $assetTypeUpper stack. " .
                 "You can do it by setting the config [stacked-components.default-stack-$assetTypeLower] " .
-                "or the environment variable [STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_$assetTypeUpper]"
+                "or the environment variable [STACKED_COMPONENTS_DEFAULT_STACK_$assetTypeUpper]"
             );
         }
 

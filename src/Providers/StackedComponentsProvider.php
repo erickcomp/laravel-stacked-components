@@ -8,15 +8,14 @@ use Illuminate\Support\ServiceProvider;
 
 class StackedComponentsProvider extends ServiceProvider
 {
+    private const CONFIG_PATH = __DIR__ . '/../../config/stacked-components.php';
+
     /**
      * Register any package services.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/stacked-assets-components.php',
-            'stacked-components',
-        );
+        $this->mergeConfigFrom(self::CONFIG_PATH, 'stacked-components');
     }
 
     /**
@@ -24,13 +23,15 @@ class StackedComponentsProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->publishes([self::CONFIG_PATH => config_path('stacked-components.php')], 'stacked-components-config');
+
         $config = config('stacked-components');
 
         $componentNamespace = $config['component-namespace'] ?? false;
         $jsComponentName = $config['component-name-js'] ?? 'js';
         $cssComponentName = $config['component-name-css'] ?? 'css';
-        $contentComponentName = $config['component-name-content'] ?? 'content';
-        $divComponentName = $config['component-name-div'] ?? 'div';
+        $contentComponentName = $config['component-name-content'] ?? 'stacked-content';
+        $divComponentName = $config['component-name-div'] ?? 'stacked-div';
 
         if ($componentNamespace === true) {
             $componentNamespace = 'stacked';

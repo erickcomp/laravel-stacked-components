@@ -97,7 +97,7 @@ class CssTest extends TestCase
         } catch (ViewException $e) {
             $this->assertInstanceOf(\LogicException::class, $e->getPrevious());
             $this->assertStringContainsString('CSS stack', $e->getMessage());
-            $this->assertStringContainsString('STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_CSS', $e->getMessage());
+            $this->assertStringContainsString('STACKED_COMPONENTS_DEFAULT_STACK_CSS', $e->getMessage());
         }
     }
 

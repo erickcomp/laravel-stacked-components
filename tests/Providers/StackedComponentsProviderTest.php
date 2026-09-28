@@ -6,9 +6,11 @@ use ErickComp\StackedComponents\Content;
 use ErickComp\StackedComponents\Css;
 use ErickComp\StackedComponents\Div;
 use ErickComp\StackedComponents\Js;
+use ErickComp\StackedComponents\Providers\StackedComponentsProvider;
 use ErickComp\StackedComponents\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class StackedComponentsProviderTest extends TestCase
 {
@@ -27,6 +29,15 @@ class StackedComponentsProviderTest extends TestCase
             ],
             config('stacked-components'),
         );
+    }
+
+    public function test_the_config_is_publishable(): void
+    {
+        $paths = ServiceProvider::pathsToPublish(StackedComponentsProvider::class, 'stacked-components-config');
+
+        $this->assertCount(1, $paths);
+        $this->assertSame(config_path('stacked-components.php'), \reset($paths));
+        $this->assertSame(\array_keys(config('stacked-components')), \array_keys(require \key($paths)));
     }
 
     public function test_it_registers_the_components_under_the_default_names(): void

@@ -97,7 +97,7 @@ class JsTest extends TestCase
         } catch (ViewException $e) {
             $this->assertInstanceOf(\LogicException::class, $e->getPrevious());
             $this->assertStringContainsString('stacked-components.default-stack-js', $e->getMessage());
-            $this->assertStringContainsString('STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_JS', $e->getMessage());
+            $this->assertStringContainsString('STACKED_COMPONENTS_DEFAULT_STACK_JS', $e->getMessage());
         }
     }
 
