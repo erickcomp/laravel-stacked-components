@@ -49,6 +49,9 @@ class StackedComponentsProvider extends ServiceProvider
         $this->createStacks();
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function createStacks()
     {
         ViewFactory::macro('hasStack', function (string $stack): bool {

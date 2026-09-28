@@ -32,6 +32,7 @@ abstract class Asset extends LaravelBladeComponent
         ?string $stack = null,
         bool|string $once = true,
         bool|string $stackPrepend = false,
+        /** @internal This property is internal. If you want to redeclare it, do so at your own risk. */
         protected null|string|array|object|false $assetFunction = null,
     ) {
         $this->stack = $this->validateStack($stack);
@@ -49,6 +50,9 @@ abstract class Asset extends LaravelBladeComponent
         return \is_bool($value) ? $value : \filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function validateStack(?string $stack): string
     {
         $assetType = static::assetType();
@@ -70,6 +74,8 @@ abstract class Asset extends LaravelBladeComponent
 
     /**
      * Return the asset "type", like "js" and "css"
+     *
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     protected static function assetType(): string
     {
@@ -78,6 +84,8 @@ abstract class Asset extends LaravelBladeComponent
 
     /**
      * Must return the code that will be pushed/prepended to the stack
+     *
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     abstract protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string;
 
@@ -92,6 +100,9 @@ abstract class Asset extends LaravelBladeComponent
         return $this->doRender(...);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function doRender(array $componentData)
     {
         $attributesForCode = $this->getAttributesToGenerateCode($componentData);
@@ -104,11 +115,17 @@ abstract class Asset extends LaravelBladeComponent
         return static::emptyView();
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getRenderedSlot(ComponentSlot $slot): string
     {
         return $slot->toHtml();
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
         $trimedSlot = \trim((string) ($componentData['slot'] ?? ''));
@@ -132,6 +149,7 @@ abstract class Asset extends LaravelBladeComponent
      * Insert (push or prepend) a block of code into a stack
      * 
      * @param "push"|"prepend" $stackOp
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     protected function insertCodeIntoStack(string $code, bool $once, string $stackOp)
     {
@@ -151,6 +169,8 @@ abstract class Asset extends LaravelBladeComponent
     /**
      * Returns an instance of \Illuminate\Contracts\View\View interface.
      * Such instance is hollow and does not have the overhead of caching or access the filesystem at all
+     *
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     protected final static function emptyView(): LaravelViewInterface
     {
@@ -181,6 +201,9 @@ abstract class Asset extends LaravelBladeComponent
         return self::$emptyView;
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getAssetSrc(string $src, array $additionalParams = []): string
     {
         $assetFunction = $this->getAssetFunction();
@@ -201,6 +224,9 @@ abstract class Asset extends LaravelBladeComponent
         return App::call($assetFunction, $callParams);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getAssetFunction(): null|string|array|object|false
     {
         return $this->assetFunction ?? config('stacked-components.asset-function');
@@ -210,12 +236,16 @@ abstract class Asset extends LaravelBladeComponent
      * PHP's internal functions, keyed by name so the lookup is a hash hit
      *
      * @return array<string, int>
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     protected static function phpInternalFunctions(): array
     {
         return self::$phpInternalFunctions ??= \array_flip(\get_defined_functions(true)['internal']);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function isPhpInternalFunction(string $functionName): bool
     {
         return isset(static::phpInternalFunctions()[$functionName]);
@@ -224,6 +254,8 @@ abstract class Asset extends LaravelBladeComponent
     /**
      * Whether it's a global function with no "$asset" parameter, like Laravel's asset($path), that App::call()
      * can't bind the src to, so the src must be passed positionally
+     *
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
      */
     protected function isFunctionWithoutAssetParameter(string $functionName): bool
     {

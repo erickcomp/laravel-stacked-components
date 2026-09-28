@@ -20,16 +20,25 @@ class Content extends Asset
         parent::__construct(null, $stack, $once, $stackPrepend);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function validateStack(?string $stack): string
     {
         return $stack ?? '';
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
         return new ComponentAttributeBag();
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
         return $this->getRenderedSlot($slot);
