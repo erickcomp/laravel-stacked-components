@@ -27,7 +27,7 @@ class Css extends Asset
 
         $attributes = new ComponentAttributeBag([
             ...$defaultAttributeValues,
-            ...$attributes->except('src')->all(),
+            ...$attributes->except('src')->getAttributes(),
         ]);
 
         $renderedAttributes = \trim($attributes);

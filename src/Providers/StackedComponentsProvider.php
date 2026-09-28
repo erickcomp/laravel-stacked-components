@@ -32,12 +32,12 @@ class StackedComponentsProvider extends ServiceProvider
         $contentComponentName = $config['component-name-content'] ?? 'content';
         $divComponentName = $config['component-name-div'] ?? 'div';
 
-        if (\is_bool($componentNamespace)) {
+        if ($componentNamespace === true) {
             $componentNamespace = 'stacked';
         }
 
-        if (\is_string($componentNamespace)) {
-            Blade::componentNamespace('ErickComp\\StackedAssetComponents', $componentNamespace);
+        if (\is_string($componentNamespace) && $componentNamespace !== '') {
+            Blade::componentNamespace('ErickComp\\StackedComponents', $componentNamespace);
         }
 
         Blade::component($jsComponentName, \ErickComp\StackedComponents\Js::class);
@@ -58,7 +58,9 @@ class StackedComponentsProvider extends ServiceProvider
             function (string $templateStr): string {
                 if (\str_contains($templateStr, '</head>')) {
                     if (!ViewFactory::hasStack('head_bottom')) {
-                        ViewFactory::startPush('head_bottom', '');
+                        // startPush() with no content opens an output buffer, so it must be closed right away
+                        ViewFactory::startPush('head_bottom');
+                        ViewFactory::stopPush();
                     }
 
                     return \str_replace('</head>', "@stack('head_bottom')\n</head>", $templateStr);
