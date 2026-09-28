@@ -42,6 +42,11 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        env:
+          # Every Laravel 10 and 11 release has a security advisory, and Composer 2.9+ refuses to install
+          # those by default. The package still supports them, so they must stay testable
+          COMPOSER_NO_BLOCKING: 1
+          COMPOSER_NO_SECURITY_BLOCKING: 1
         run: |
           composer require "laravel/framework:^${{ matrix.laravel }}.0" --no-update --no-interaction
           composer require --dev "orchestra/testbench:^${{ matrix.testbench }}.0" --no-update --no-interaction
