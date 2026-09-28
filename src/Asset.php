@@ -103,7 +103,7 @@ abstract class Asset extends LaravelBladeComponent
 
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
-        $trimedSlot = \trim((string) $componentData['attributes']['slot']);
+        $trimedSlot = \trim((string) ($componentData['slot'] ?? ''));
         $trimedSrc = \trim($this->src ?? '');
 
         if (!empty($trimedSlot) && !empty($trimedSrc)) {
