@@ -8,11 +8,17 @@ use Illuminate\View\ComponentSlot;
 
 class Js extends Asset
 {
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected static function assetType(): string
     {
         return 'js';
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
         $renderedSlot = $this->getRenderedSlot($slot);

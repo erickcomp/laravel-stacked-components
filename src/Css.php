@@ -8,11 +8,17 @@ use Illuminate\View\ComponentSlot;
 
 class Css extends Asset
 {
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected static function assetType(): string
     {
         return 'css';
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
 

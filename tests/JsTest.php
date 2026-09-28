@@ -97,7 +97,7 @@ class JsTest extends TestCase
         } catch (ViewException $e) {
             $this->assertInstanceOf(\LogicException::class, $e->getPrevious());
             $this->assertStringContainsString('stacked-components.default-stack-js', $e->getMessage());
-            $this->assertStringContainsString('STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_JS', $e->getMessage());
+            $this->assertStringContainsString('STACKED_COMPONENTS_DEFAULT_STACK_JS', $e->getMessage());
         }
     }
 
@@ -126,6 +126,33 @@ class JsTest extends TestCase
         );
 
         $this->assertSame(2, \substr_count($html, '<script'));
+    }
+
+    public function test_bound_once_false_pushes_the_same_script_again(): void
+    {
+        $html = $this->renderBlade(
+            '<x-js src="/app.js" stack="scripts" :once="false" /><x-js src="/app.js" stack="scripts" :once="false" />@stack(\'scripts\')',
+        );
+
+        $this->assertSame(2, \substr_count($html, '<script'));
+    }
+
+    public function test_stack_prepend_false_pushes(): void
+    {
+        $html = $this->renderBlade(
+            '<x-js src="/b.js" stack="scripts" /><x-js src="/a.js" stack="scripts" stack-prepend="false" />@stack(\'scripts\')',
+        );
+
+        $this->assertSame('<script src="/b.js"></script>' . PHP_EOL . '<script src="/a.js"></script>', $html);
+    }
+
+    public function test_valueless_stack_prepend_prepends(): void
+    {
+        $html = $this->renderBlade(
+            '<x-js src="/b.js" stack="scripts" /><x-js src="/a.js" stack="scripts" stack-prepend />@stack(\'scripts\')',
+        );
+
+        $this->assertSame('<script src="/a.js"></script>' . PHP_EOL . '<script src="/b.js"></script>', $html);
     }
 
     public function test_stack_prepend_puts_the_script_first(): void

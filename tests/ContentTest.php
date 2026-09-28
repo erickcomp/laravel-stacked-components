@@ -36,6 +36,15 @@ class ContentTest extends TestCase
         $this->assertSame('[foo]', $html);
     }
 
+    public function test_valueless_once_pushes_the_same_content_only_once(): void
+    {
+        $html = $this->renderBlade(
+            '<x-stacked-content stack="s" once>foo</x-stacked-content><x-stacked-content stack="s" once>foo</x-stacked-content>[@stack(\'s\')]',
+        );
+
+        $this->assertSame('[foo]', $html);
+    }
+
     public function test_stack_prepend_puts_the_content_first(): void
     {
         $html = $this->renderBlade(
@@ -50,6 +59,13 @@ class ContentTest extends TestCase
         $html = $this->renderBlade('<x-stacked-content stack="s" class="foo">bar</x-stacked-content>[@stack(\'s\')]');
 
         $this->assertSame('[bar]', $html);
+    }
+
+    public function test_src_is_ignored_like_any_other_attribute(): void
+    {
+        $html = $this->renderBlade('<x-stacked-content stack="s" src="/app.js">foo</x-stacked-content>[@stack(\'s\')]');
+
+        $this->assertSame('[foo]', $html);
     }
 
     public function test_it_renders_blade_inside_the_slot(): void

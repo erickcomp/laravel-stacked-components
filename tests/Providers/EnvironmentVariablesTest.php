@@ -7,10 +7,10 @@ use ErickComp\StackedComponents\Tests\TestCase;
 class EnvironmentVariablesTest extends TestCase
 {
     private const ENV = [
-        'STACKED_ASSETS_COMPONENTS_DEFAULT_ASSET_FUNCTION' => 'strtoupper',
-        'STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_JS' => 'env-js',
-        'STACKED_ASSETS_COMPONENTS_DEFAULT_STACK_CSS' => 'env-css',
-        'STACKED_ASSETS_COMPONENTS_COMPONENT_NAME_JS' => 'env-script',
+        'STACKED_COMPONENTS_ASSET_FUNCTION' => 'strtoupper',
+        'STACKED_COMPONENTS_DEFAULT_STACK_JS' => 'env-js',
+        'STACKED_COMPONENTS_DEFAULT_STACK_CSS' => 'env-css',
+        'STACKED_COMPONENTS_COMPONENT_NAME_JS' => 'env-script',
     ];
 
     protected function setUp(): void

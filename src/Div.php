@@ -14,25 +14,31 @@ class Div extends Asset
      */
     public function __construct(
         string $stack,
-        public ?string $src = null,
-        string $once = "false",
-        bool $stackPrepend = false,
+        bool|string $once = false,
+        bool|string $stackPrepend = false,
     ) {
-        parent::__construct($src, $stack, $once, $stackPrepend);
+        parent::__construct(null, $stack, $once, $stackPrepend);
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function validateStack(?string $stack): string
     {
         return $stack ?? '';
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getAttributesToGenerateCode(array $componentData): ComponentAttributeBag
     {
-        /** @var \Illuminate\View\ComponentAttributeBag $attributes */
-        $attributes = $componentData['attributes'];
-        return $attributes->merge(['src' => $componentData['src']]);
+        return $componentData['attributes'];
     }
 
+    /**
+     * @internal This method is internal. If you want to extend it, do so at your own risk.
+     */
     protected function getStackedCode(ComponentAttributeBag $attributes, ComponentSlot $slot): string
     {
         $renderedSlot = $this->getRenderedSlot($slot);
