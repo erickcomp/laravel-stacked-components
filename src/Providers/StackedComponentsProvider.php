@@ -55,6 +55,10 @@ class StackedComponentsProvider extends ServiceProvider
             return \array_key_exists($stack, $this->pushes);
         });
 
+        if (!config('stacked-components.head-bottom-stack', true)) {
+            return;
+        }
+
         Blade::prepareStringsForCompilationUsing(
             function (string $templateStr): string {
                 if (\str_contains($templateStr, '</head>')) {
